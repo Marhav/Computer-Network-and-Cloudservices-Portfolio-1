@@ -13,17 +13,14 @@ while True:
     clientSocket, address = serverSocket.accept()
     print(f"Connection with {address} established!")
 
-    clientSocket.send("Hello! You are connected to the server!".encode())
+    clientSocket.send("connected".encode())
 
     connected = True
     while connected:
+        msg = input("Write message:\n")
+        clientSocket.send(msg.encode())
+
         msg = clientSocket.recv(1024)
-
         print(msg.decode())
-
-        if( msg.decode().__eq__("Bye")):
+        if (msg.decode().__eq__("Disconnecting, bye!")):
             connected = False
-            clientSocket.send("Disconnecting, bye!".encode())
-            clientSocket.close()
-        else: clientSocket.send(msg)
-

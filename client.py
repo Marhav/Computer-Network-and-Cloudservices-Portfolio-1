@@ -1,22 +1,34 @@
 # Client program
 
 import socket
+import sys
+
+ip = sys.argv[1]
+port = sys.argv[2]
+bot = sys.argv[3]
 
 clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-clientSocket.connect(('10.45.236.167', 9998))
+clientSocket.connect((ip, int(port)))
 
+
+'''
 msg = clientSocket.recv(1024)
 
 print(msg.decode())
 
-msgSend = ""
+msg = ""
 
 connected = True
 while connected:
-    msgSend = input("Write message:\n")
-
-    clientSocket.send(msgSend.encode())
+    # Reciving message
     msg = clientSocket.recv(1024)
     print(msg.decode())
-    if(msg.decode().__eq__("Disconnecting, bye!")):
+
+    if (msg.decode().__eq__("Bye")):
         connected = False
+        clientSocket.send("Disconnecting, bye!".encode())
+        clientSocket.close()
+    else:
+        msg = input("Write message:\n")
+        clientSocket.send(msg.encode())
+'''
