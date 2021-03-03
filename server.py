@@ -22,5 +22,5 @@ while True:
 
         msg = clientSocket.recv(1024)
         print(msg.decode())
-        if (msg.decode().__eq__("Disconnecting, bye!")):
+        if msg.decode().__eq__("Disconnecting, bye!"):
             connected = False
