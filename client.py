@@ -72,4 +72,3 @@ while connected:
             reply = eval(innBot + "(ArrayOfMutualWords[0])")
         else: reply = "I dont have any reply to that"
         clientSocket.send(reply.encode())
-
