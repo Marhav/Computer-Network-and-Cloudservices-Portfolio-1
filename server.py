@@ -1,16 +1,16 @@
 # Server program
 
 import socket
-from threading import *
+from _thread import *
+
+connections = []
 
 
 def connection(sock, addr):
     connected = True
     while connected:
-        msg = sock.recv(1024)
-        print(msg.decode())
-        if msg.decode().__eq__("Disconnecting, bye!"):
-            connected = False
+        broadcast(input("Write message:\n"))
+        recive()
 
 
 def broadcast(string):
@@ -18,26 +18,25 @@ def broadcast(string):
         sock.send(string.encode())
 
 
+def recive():
+    for sockk in connections:
+        msg = sockk.recv(1024)
+        print(msg.decode())
+        if msg.decode().__eq__("Disconnecting, bye!"):
+            connected = False
+
+
 serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 serverSocket.bind(('192.168.1.18', 2345))
 
 serverSocket.listen(5)
-th = []
-
-connections = []
 
 print("Listening for connections...")
 
 while True:
-
     clientSocket, address = serverSocket.accept()
-
     connections.append(clientSocket)
+    start_new_thread(connection, (clientSocket, address))
 
     print(f"Connection with {address} established!")
     clientSocket.send("Connected".encode())
-
-    th.append(Thread(target=connection, args=(clientSocket, address)).start())
-
-    msg = input("Write message:\n")
-    broadcast(msg)
