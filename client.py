@@ -66,9 +66,12 @@ while connected:
         clientSocket.send("Disconnecting, bye!".encode())
         clientSocket.close()
     else:
+        reply = ""
+        reply += innBot + ": "
         if len(ArrayOfMutualWords) > 1:
-            reply = eval(innBot + "(ArrayOfMutualWords[0], ArrayOfMutualWords[1])")
+            reply += eval(innBot + "(ArrayOfMutualWords[0], ArrayOfMutualWords[1])")
         elif len(ArrayOfMutualWords) == 1:
-            reply = eval(innBot + "(ArrayOfMutualWords[0])")
-        else: reply = "I dont have any reply to that"
+            reply += (eval(innBot + "(ArrayOfMutualWords[0])"))
+        else: reply += "I dont have any reply to that"
+        reply += "\n"
         clientSocket.send(reply.encode())
