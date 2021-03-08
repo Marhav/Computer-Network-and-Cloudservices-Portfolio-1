@@ -25,9 +25,7 @@ def recive():
         print(msg.decode())
         if msg.decode().__eq__("Disconnecting, bye!"):
             connected = False
-            for client in connections:
-                if client.__eq__(sock):
-                    connections.remove(client)
+            connections.clear()
             exit_thread()
 
 
