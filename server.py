@@ -10,6 +10,7 @@ def connection(sock, addr):
     connected = True
     while connected:
         broadcast(input("Write message:\n"))
+
         recive()
 
 
@@ -19,17 +20,21 @@ def broadcast(string):
 
 
 def recive():
-    for sockk in connections:
-        msg = sockk.recv(1024)
+    for sock in connections:
+        msg = sock.recv(1024)
         print(msg.decode())
         if msg.decode().__eq__("Disconnecting, bye!"):
             connected = False
+            for client in connections:
+                if client.__eq__(sock):
+                    connections.remove(client)
+            exit_thread()
 
 
 serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 serverSocket.bind(('192.168.1.18', 2345))
 
-serverSocket.listen(5)
+serverSocket.listen()
 
 print("Listening for connections...")
 
@@ -37,6 +42,5 @@ while True:
     clientSocket, address = serverSocket.accept()
     connections.append(clientSocket)
     start_new_thread(connection, (clientSocket, address))
-
     print(f"Connection with {address} established!")
     clientSocket.send("Connected".encode())

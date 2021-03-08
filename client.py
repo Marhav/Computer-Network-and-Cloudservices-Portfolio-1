@@ -2,17 +2,33 @@
 
 import socket
 import sys
+import random
 
 # Bots
 
 def alice(a, b=None):
+    if a == "hi":
+        return "Hello!"
     return "I think {} sounds great!".format(a + "ing")
 
 
 def bob(a, b=None):
+    if a == "hi":
+        return "Hello!"
     if b is None:
         return "Not sure about {}. Don't I get a choice?".format(a + "ing")
     return "Sure, both {} and {} seems ok to me".format(a, b + "ing")
+
+def cs(a, b=None):
+    if a == "hi" or "hello":
+        return "Welcome to Customer Service! What can i help you with today?"
+    if b is None:
+        uselessness = random.choice(["Sorry, I can't help you with {}.".format(a + "ing"),
+                                     "I don't understand, is there a problem?",
+                                     "I will contact my supervisor at once!"])
+        return uselessness
+    uselessness = random.choice(["Do you need help with {} or {}?".format(a + "ing", b + "ing")])
+    return uselessness
 
 
 # Functions
@@ -49,7 +65,7 @@ while connected:
     print(msg.decode())
 
     ArrayOfIncommingWords = array_to_letters(msg.decode().lower().split())
-    ArrayOfMeaningfulWords = {'cry', 'code', 'laugh', 'eat', 'bye'}
+    ArrayOfMeaningfulWords = {'cry', 'code', 'laugh', 'eat', 'bye', 'hi'}
     ArrayOfMutualWords = []
 
     for word1 in ArrayOfMeaningfulWords:
@@ -73,5 +89,4 @@ while connected:
         elif len(ArrayOfMutualWords) == 1:
             reply += (eval(innBot + "(ArrayOfMutualWords[0])"))
         else: reply += "I dont have any reply to that"
-        reply += "\n"
         clientSocket.send(reply.encode())
