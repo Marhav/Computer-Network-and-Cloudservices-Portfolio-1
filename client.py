@@ -20,8 +20,6 @@ def bob(a, b=None):
     return "Sure, both {} and {} seems ok to me".format(a, b + "ing")
 
 def cs(a, b=None):
-    if a == "hi" or "hello":
-        return "Welcome to Customer Service! What can i help you with today?"
     if b is None:
         uselessness = random.choice(["Sorry, I can't help you with {}.".format(a + "ing"),
                                      "I don't understand, is there a problem?",
@@ -41,12 +39,36 @@ def array_to_letters(input):
     return array
 
 
+#  Checks if a bot exists.
+def validate_bot(botname):
+    valid = False
+    valid_botnames = ['alice', 'bob', 'cs']
+
+    valid_botnames_str = ""
+    for name in valid_botnames:
+        valid_botnames_str += name + " "
+        if name.__eq__(botname):
+            valid = True
+
+    if not valid:
+        print("Invalid botname, valid botnames are: " + valid_botnames_str)
+        exit()
+
+
+# Print help instructions.
+def help():
+    print("help")
+
+
 # Input arguments
-
-ip = sys.argv[1]
-port = sys.argv[2]
-innBot = sys.argv[3]
-
+if sys.argv[1].lower().__eq__('-h') or sys.argv[1].lower().__eq__('--help'):
+    help()
+    exit()
+else:
+    ip = sys.argv[1]
+    port = sys.argv[2]
+    innBot = sys.argv[3].lower()
+    validate_bot(innBot)
 
 #Connecting to server
 
