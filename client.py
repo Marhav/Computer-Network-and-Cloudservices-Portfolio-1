@@ -17,7 +17,7 @@ def bob(a, b=None):
         return "Hello!"
     if b is None:
         return "Not sure about {}. Don't I get a choice?".format(a + "ing")
-    return "Sure, both {} and {} seems ok to me".format(a, b + "ing")
+    return "Sure, both {} and {} seems ok to me".format(a + "ing", b + "ing")
 
 def cs(a, b=None):
     if b is None:
@@ -32,9 +32,9 @@ def cs(a, b=None):
 # Functions
 
 # Takes in an array and removes everything but letters.
-def array_to_letters(input):
+def array_to_letters(in_ary):
     array = []
-    for i in input:
+    for i in in_ary:
         array.append(''.join(filter(str.isalpha, i)))
     return array
 
@@ -61,14 +61,31 @@ def help():
 
 
 # Input arguments
-if sys.argv[1].lower().__eq__('-h') or sys.argv[1].lower().__eq__('--help'):
+try:
+    argument_1 = sys.argv[1]
+except Exception as e:
+    print("Input argument error! Try --help")
+    exit()
+
+if argument_1.lower().__eq__('-h') or argument_1.lower().__eq__('--help'):
     help()
     exit()
 else:
-    ip = sys.argv[1]
-    port = sys.argv[2]
-    innBot = sys.argv[3].lower()
+    ip = argument_1
+    try:
+        port = sys.argv[2]
+    except Exception as e:
+        print("Input argument error! Try --help")
+        exit()
+
+    try:
+        innBot = sys.argv[3].lower()
+    except Exception as e:
+        print("Input argument error! Try --help")
+        exit()
+
     validate_bot(innBot)
+
 
 #Connecting to server
 
@@ -87,7 +104,7 @@ while connected:
     print(msg.decode())
 
     ArrayOfIncommingWords = array_to_letters(msg.decode().lower().split())
-    ArrayOfMeaningfulWords = {'cry', 'code', 'laugh', 'eat', 'bye', 'hi'}
+    ArrayOfMeaningfulWords = {'cry', 'code', 'laugh', 'eat', 'bye', 'hi', 'sing', 'play'}
     ArrayOfMutualWords = []
 
     for word1 in ArrayOfMeaningfulWords:

@@ -3,14 +3,20 @@
 import socket
 from _thread import *
 
+# List of all the sockets connected to the server.
 connections = []
 
 
-def connection(sock, addr):
-    connected = True
-    while connected:
-        broadcast(input("Write message:\n"))
+# Functions
 
+def connection(sock, addr):
+    connections.append(sock)
+
+    print(f"Connection with {addr} established!")
+    sock.send("Connected".encode())
+
+    while True:
+        broadcast(input("Write message:\n"))
         recive()
 
 
@@ -24,11 +30,11 @@ def recive():
         msg = sock.recv(1024)
         print(msg.decode())
         if msg.decode().__eq__("Disconnecting, bye!"):
-            connected = False
             connections.clear()
             exit_thread()
 
 
+# Creating a socket for the server, listening for incoming connections.
 serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 serverSocket.bind(('192.168.1.18', 2345))
 
@@ -36,9 +42,7 @@ serverSocket.listen()
 
 print("Listening for connections...")
 
+# Accepting new connections and starting new threads for each.
 while True:
     clientSocket, address = serverSocket.accept()
-    connections.append(clientSocket)
     start_new_thread(connection, (clientSocket, address))
-    print(f"Connection with {address} established!")
-    clientSocket.send("Connected".encode())
