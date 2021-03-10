@@ -4,6 +4,13 @@ import socket
 import sys
 import random
 
+# Array and string containing valid bot names.
+valid_botnames_ary = ['alice', 'bob', 'cs']
+valid_botnames_str = ""
+for name in valid_botnames_ary:
+    valid_botnames_str += name + " "
+
+
 # Bots
 
 def alice(a, b=None):
@@ -18,6 +25,7 @@ def bob(a, b=None):
     if b is None:
         return "Not sure about {}. Don't I get a choice?".format(a + "ing")
     return "Sure, both {} and {} seems ok to me".format(a + "ing", b + "ing")
+
 
 def cs(a, b=None):
     if b is None:
@@ -40,14 +48,11 @@ def array_to_letters(in_ary):
 
 
 #  Checks if a bot exists.
-def validate_bot(botname):
+def validate_bot(in_botname):
     valid = False
-    valid_botnames = ['alice', 'bob', 'cs']
 
-    valid_botnames_str = ""
-    for name in valid_botnames:
-        valid_botnames_str += name + " "
-        if name.__eq__(botname):
+    for botname in valid_botnames_ary:
+        if botname.__eq__(in_botname):
             valid = True
 
     if not valid:
@@ -56,38 +61,40 @@ def validate_bot(botname):
 
 
 # Print help instructions.
-def help():
-    print("help")
+def argument_help():
+    print("To run program type:\n "
+          "$: py client.py <ip-address> <port> <Bot-name>\n"
+          "Valid bot names are: " + valid_botnames_str)
 
 
 # Input arguments
+
 try:
     argument_1 = sys.argv[1]
-except Exception as e:
+except ValueError:
     print("Input argument error! Try --help")
     exit()
 
 if argument_1.lower().__eq__('-h') or argument_1.lower().__eq__('--help'):
-    help()
+    argument_help()
     exit()
 else:
     ip = argument_1
     try:
         port = sys.argv[2]
-    except Exception as e:
+    except ValueError:
         print("Input argument error! Try --help")
         exit()
 
     try:
         innBot = sys.argv[3].lower()
-    except Exception as e:
+    except ValueError:
         print("Input argument error! Try --help")
         exit()
 
     validate_bot(innBot)
 
-
-#Connecting to server
+# Connecting to server
 
 clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 clientSocket.connect((ip, int(port)))
@@ -114,7 +121,6 @@ while connected:
 
     print(ArrayOfMutualWords)
 
-
     # Creating a reply
     if "bye" in ArrayOfMutualWords:
         connected = False
@@ -127,5 +133,6 @@ while connected:
             reply += eval(innBot + "(ArrayOfMutualWords[0], ArrayOfMutualWords[1])")
         elif len(ArrayOfMutualWords) == 1:
             reply += (eval(innBot + "(ArrayOfMutualWords[0])"))
-        else: reply += "I dont have any reply to that"
+        else:
+            reply += "I dont have any reply to that"
         clientSocket.send(reply.encode())
