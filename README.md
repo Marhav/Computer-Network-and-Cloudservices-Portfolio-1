@@ -8,8 +8,8 @@ This assignment contains one Server program and one client program.
 * The server program is designed to allow multiple clients connect at once with a TCP socket and will continuously accept new incomming 
 requests from clients. Furthermore the serverprogram will allow you to start a conversation with all the conected clients. The clients will 
 respond differently depending on which bot the client has decided to connect with. </br></br>
-The conversation work in a way that the server will ask the user for an input, when the input is given the server will broadcast the message
-to all clients and then collect the replies.
+The conversation works like this: The server will ask the user for an input, when the input is given the server will broadcast the message
+to all clients and then collect the replies and print them on the server.
 
 * The client program is supposed to represent a bot connecting to the server. The client program require 3 input arguments to start properly, these 
 are IP-address, Port and Bot-name. If the user struggles with starting the program properly there should be sufficient help to get from the 
