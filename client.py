@@ -12,11 +12,11 @@ for name in valid_botnames_ary:
 
 
 # Bots
-# **********************************************************************
+# ***************************************************************************************
 # NOTE!:
 # I created one bot myself (cs) and decided to pick some from the suggested ones,
 # since I didn't really see it as part of the technical challenge we were presented with.
-# **********************************************************************
+# ***************************************************************************************
 
 def alice(a, b=None):
     if a == "hi":
