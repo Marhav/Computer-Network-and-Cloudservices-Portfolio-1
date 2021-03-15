@@ -5,13 +5,18 @@ import sys
 import random
 
 # Array and string containing valid bot names.
-valid_botnames_ary = ['alice', 'bob', 'cs']
+valid_botnames_ary = ['alice', 'bob', 'dora', 'cs']
 valid_botnames_str = ""
 for name in valid_botnames_ary:
     valid_botnames_str += name + " "
 
 
 # Bots
+# **********************************************************************
+# NOTE!:
+# I created one bot myself (cs) and decided to pick some from the suggested ones,
+# since I didn't really see it as part of the technical challenge we were presented with.
+# **********************************************************************
 
 def alice(a, b=None):
     if a == "hi":
@@ -26,6 +31,11 @@ def bob(a, b=None):
         return "Not sure about {}. Don't I get a choice?".format(a + "ing")
     return "Sure, both {} and {} seems ok to me".format(a + "ing", b + "ing")
 
+def dora(a, b = None):
+    alternatives = ["coding", "singing", "sleeping", "fighting"]
+    b = random.choice(alternatives)
+    res = "Yea, {} is an option. Or we could do some {}.".format(a, b)
+    return res, b
 
 def cs(a, b=None):
     if b is None:
@@ -80,6 +90,7 @@ if argument_1.lower().__eq__('-h') or argument_1.lower().__eq__('--help'):
     exit()
 else:
     ip = argument_1
+
     try:
         port = sys.argv[2]
     except ValueError:
@@ -110,28 +121,29 @@ while connected:
     msg = clientSocket.recv(1024)
     print(msg.decode())
 
-    ArrayOfIncommingWords = array_to_letters(msg.decode().lower().split())
-    ArrayOfMeaningfulWords = {'cry', 'code', 'laugh', 'eat', 'bye', 'hi', 'sing', 'play'}
-    ArrayOfMutualWords = []
+    words_from_input = array_to_letters(msg.decode().lower().split())
+    recognizable_words = {'bye', 'hi', 'hello', 'cry', 'code', 'laugh', 'eat', 'sing', 'play', 'dance',
+                          'party', 'hug', 'talk', 'run'}
+    words_recognized = []
 
-    for word1 in ArrayOfMeaningfulWords:
-        for word2 in ArrayOfIncommingWords:
+    for word1 in recognizable_words:
+        for word2 in words_from_input:
             if word1.__eq__(word2):
-                ArrayOfMutualWords.append(word1)
+                words_recognized.append(word1)
 
-    print(ArrayOfMutualWords)
+    print(words_recognized)
 
     # Creating a reply
-    if "bye" in ArrayOfMutualWords:
+    if "bye" in words_recognized:
         connected = False
         clientSocket.send("Disconnecting, bye!".encode())
         clientSocket.close()
     else:
         reply = ""
         reply += innBot + ": "
-        if len(ArrayOfMutualWords) > 1:
+        if len(words_recognized) > 1:
             reply += eval(innBot + "(ArrayOfMutualWords[0], ArrayOfMutualWords[1])")
-        elif len(ArrayOfMutualWords) == 1:
+        elif len(words_recognized) == 1:
             reply += (eval(innBot + "(ArrayOfMutualWords[0])"))
         else:
             reply += "I dont have any reply to that"
