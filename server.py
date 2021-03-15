@@ -3,9 +3,15 @@
 import socket
 from _thread import *
 
+# **********************************************************************
+# ADD the IP-address of your computer and pick a Port:
+IP = '192.168.1.18'
+PORT = 2345
+# **********************************************************************
+
+
 # List of all the sockets connected to the server.
 connections = []
-
 
 # Functions
 
@@ -36,7 +42,7 @@ def recive():
 
 # Creating a socket for the server, listening for incoming connections.
 serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-serverSocket.bind(('192.168.1.18', 2345))
+serverSocket.bind((IP, PORT))
 
 serverSocket.listen()
 
