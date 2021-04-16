@@ -1,4 +1,4 @@
-# Datanettverk Portfolio 1
+# Computer Network and Cloudservices - Portfolio 1
 
 This assignment contains one Server program and one client program. 
 
